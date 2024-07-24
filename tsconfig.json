@@ -1,0 +1,4 @@
+{
+  "files": ["types.d.ts"],
+  "include": ["types.d.ts"],
+}
