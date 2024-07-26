@@ -13,8 +13,6 @@ const Item = ({item, onRemove}: PropsType) => {
 
     const {id, name, content} = item;
 
-
-
     return (
         <li style={{padding: 10, borderBottom: "1px solid #ddd", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20
         }} > 
