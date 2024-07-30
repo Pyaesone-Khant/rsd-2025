@@ -6,7 +6,7 @@ import { Form, Header, Item } from "./components";
 
 const App = () => {
 
-    const { showForm } = useApp();
+    const { showForm, setAlert, setShowForm } = useApp();
 
     const [data, setData] = useState([
         { id: 1, content: "Hello, World!", name: "Alice" },
@@ -15,12 +15,15 @@ const App = () => {
     ])
 
     const addItem = ({ content, name }: { content: string, name: string }) => {
-        const id = data[data.length - 1].id + 1;
-        setData([...data, { id, content, name }])
+        const id = data?.length ? data[data.length - 1].id + 1 : 1;
+        setData([...data, { id, content, name }]);
+        setAlert({ alertType: "success", alertMsg: "Item added successfully." });
+        setShowForm(false)
     }
 
     const removeItem = (id: number) => {
         setData(data.filter(item => item.id !== id))
+        setAlert({ alertType: "success", alertMsg: "Item removed successfully." })
     }
 
     return (

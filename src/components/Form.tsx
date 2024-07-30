@@ -4,12 +4,11 @@ import React, { FormEvent, useRef } from 'react';
 const Form = ({ add }) => {
 
     const contentRef = useRef<HTMLInputElement>(null);
-    const nameRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         const content = contentRef.current?.value;
-        const name = nameRef.current?.value;
+        const name = "VNL"
 
         if (!content || !name) {
             alert('Please fill all fields');
@@ -26,7 +25,7 @@ const Form = ({ add }) => {
     }}>
         <Box sx={{ mb: 4, textAlign: 'right' }} >
             <TextField inputRef={contentRef} type='text' placeholder='Content' fullWidth multiline sx={{ mb: 1 }} />
-            <TextField inputRef={nameRef} type='text' placeholder='Name' fullWidth multiline sx={{ mb: 1 }} />
+            {/* <TextField inputRef={nameRef} type='text' placeholder='Name' fullWidth multiline sx={{ mb: 1 }} /> */}
             <Button variant='contained' type='submit' >
                 Post
             </Button>
