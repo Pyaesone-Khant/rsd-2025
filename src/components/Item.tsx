@@ -1,25 +1,35 @@
-import { Delete as DeleteIcon, Alarm as TimeIcon, AccountCircle as UserIcon } from "@mui/icons-material"
-import { Box, Card, CardContent, IconButton, Typography } from "@mui/material"
 import React from "react"
+import { useNavigate } from "react-router-dom"
 
+// icons
+import { Delete as DeleteIcon, Alarm as TimeIcon, AccountCircle as UserIcon } from "@mui/icons-material"
+
+// colors
 import { green } from "@mui/material/colors"
+
+// components
+import { Box, Card, CardContent, IconButton, Typography } from "@mui/material"
+
 
 type PropsType = {
     item: {
         id: number
         content: string
         name: string
+        primary?: boolean
     }
-    onRemove
+    onRemove: (id: number) => void,
 }
 
 const Item = ({ item, onRemove }: PropsType) => {
 
-    const { id, name, content } = item;
+    const { id, name, content, primary } = item;
+    const navigate = useNavigate();
 
     return (
         <Card sx={{ mb: 2 }} >
-            <CardContent>
+            {primary && <Box sx={{ height: 50, bgcolor: green[500] }} />}
+            <CardContent onClick={() => navigate(`/comments/${id}`)} >
                 <Box sx={{
                     display: "flex",
                     flexDirection: "row",
@@ -36,7 +46,10 @@ const Item = ({ item, onRemove }: PropsType) => {
                             A few second ago
                         </Typography>
                     </Box>
-                    <IconButton size="small" onClick={() => onRemove(id)} >
+                    <IconButton size="small" onClick={(e) => {
+                        onRemove(id)
+                        e.stopPropagation()
+                    }} >
                         <DeleteIcon fontSize="inherit" />
                     </IconButton>
                 </Box>

@@ -1,8 +1,16 @@
-import { Alert, AlertColor, createTheme, CssBaseline, PaletteMode, Snackbar, ThemeProvider } from "@mui/material";
-import { deepPurple, grey } from "@mui/material/colors";
 import React, { createContext, useContext, useMemo, useState } from "react";
-import App from "./App";
-import AppDrawer from "./components/AppDrawer";
+// colors
+import { deepPurple, grey } from "@mui/material/colors";
+
+// mui components
+import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from "@mui/material";
+
+// components
+import { CommentsPage, HomePage, LikesPage, LoginPage, ProfilePage, RegisterPage } from "./pages";
+import Template from "./Template";
+
+// react router
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 declare module '@mui/material/styles' {
     interface Palette {
@@ -37,6 +45,39 @@ export const useApp = () => {
     return useContext(AppContext) as AppContextType;
 }
 
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Template />,
+        children: [
+            {
+                path: "/",
+                element: <HomePage />
+            },
+            {
+                path: "/login",
+                element: <LoginPage />
+            },
+            {
+                path: "/register",
+                element: <RegisterPage />
+            },
+            {
+                path: "/profile/:id",
+                element: <ProfilePage />
+            },
+            {
+                path: "/comments/:id",
+                element: <CommentsPage />
+            },
+            {
+                path: "/likes/:id",
+                element: <LikesPage />
+            }
+        ]
+    }
+])
+
 const ThemedApp = () => {
     const [mode, setMode] = useState("dark")
     const [showForm, setShowForm] = useState(false);
@@ -51,7 +92,7 @@ const ThemedApp = () => {
                 primary: deepPurple,
                 banner: mode === "dark" ? grey[900] : grey[100],
                 text: {
-                    primary: grey[500]
+                    primary: mode === "dark" ? grey[300] : grey[700]
                 }
             },
         })
@@ -72,21 +113,7 @@ const ThemedApp = () => {
 
     return <ThemeProvider theme={theme}>
         <AppContext.Provider value={data}>
-            <AppDrawer />
-            <App />
-
-            <Snackbar
-                open={Boolean(alert)}
-                onClose={() => setAlert(null)}
-                autoHideDuration={3000}
-                anchorOrigin={{
-                    horizontal: 'center',
-                    vertical: 'top'
-                }}>
-                <Alert severity={alert?.alertType as AlertColor} >
-                    {alert?.alertMsg}
-                </Alert>
-            </Snackbar>
+            <RouterProvider router={router} />
             <CssBaseline />
         </AppContext.Provider>
     </ThemeProvider>
