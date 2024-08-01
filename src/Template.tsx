@@ -1,9 +1,8 @@
-import React from 'react';
 
 // components
 import { Alert, AlertColor, Box, Container, Snackbar } from '@mui/material';
+import { AppDrawer, Header } from '@src/components';
 import { Outlet } from 'react-router-dom';
-import { AppDrawer, Header } from './components';
 
 // context
 import { useApp } from './ThemedApp';

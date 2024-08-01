@@ -11,7 +11,7 @@ import "@fontsource/roboto/500.css"
 import "@fontsource/roboto/700.css"
 
 // components
-import ThemedApp from './ThemedApp.tsx'
+import ThemedApp from "@src/ThemedApp"
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

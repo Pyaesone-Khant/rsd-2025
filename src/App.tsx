@@ -1,7 +1,7 @@
 import { Box, Container } from "@mui/material";
-import React, { useState } from "react";
-import { useApp } from "./ThemedApp";
-import { Form, Header, Item } from "./components";
+import { Form, Header, Item } from "@src/components";
+import { useApp } from "@src/ThemedApp";
+import { useState } from "react";
 
 
 const App = () => {

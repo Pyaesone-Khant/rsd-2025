@@ -1,11 +1,10 @@
-import React from 'react'
 
 // colors
 import { pink } from '@mui/material/colors'
 
 // components
 import { Avatar, Box, Typography } from '@mui/material'
-import { Item } from '../components'
+import { Item } from '@src/components'
 
 const Profile = () => {
 

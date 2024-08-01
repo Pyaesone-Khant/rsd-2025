@@ -1,8 +1,7 @@
-import React from 'react'
 
 // components
 import { Box } from '@mui/material'
-import { UserList } from '../components'
+import { UserList } from '@src/components'
 
 const Likes = () => {
     return (

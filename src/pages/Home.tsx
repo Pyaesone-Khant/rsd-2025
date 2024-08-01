@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 // components
 import { Box } from '@mui/material'
-import { Form, Item } from '../components'
+import { Form, Item } from '@src/components'
 
 // context
-import { useApp } from '../ThemedApp'
+import { useApp } from '@src/ThemedApp'
 
 const Home = () => {
 

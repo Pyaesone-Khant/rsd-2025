@@ -1,11 +1,11 @@
-import React, { FormEvent } from 'react';
+import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // components
 import { Alert, Box, Button, TextField, Typography } from '@mui/material';
 
 // context
-import { useApp } from '../ThemedApp';
+import { useApp } from '@src/ThemedApp';
 
 const Login = () => {
 

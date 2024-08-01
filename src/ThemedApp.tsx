@@ -6,8 +6,8 @@ import { deepPurple, grey } from "@mui/material/colors";
 import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from "@mui/material";
 
 // components
-import { CommentsPage, HomePage, LikesPage, LoginPage, ProfilePage, RegisterPage } from "./pages";
-import Template from "./Template";
+import { CommentsPage, HomePage, LikesPage, LoginPage, ProfilePage, RegisterPage } from "@src/pages";
+import Template from "@src/Template";
 
 // react router
 import { createBrowserRouter, RouterProvider } from "react-router-dom";

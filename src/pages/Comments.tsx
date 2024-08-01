@@ -1,8 +1,7 @@
-import React from 'react'
 
 // components
 import { Box, Button, TextField } from '@mui/material'
-import Item from '../components/Item'
+import { Item } from '@src/components'
 
 const Comments = () => {
 
