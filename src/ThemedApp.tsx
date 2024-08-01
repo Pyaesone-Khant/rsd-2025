@@ -10,6 +10,7 @@ import { CommentsPage, HomePage, LikesPage, LoginPage, ProfilePage, RegisterPage
 import Template from "@src/Template";
 
 // react router
+import { QueryClient, QueryClientProvider } from "react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 declare module '@mui/material/styles' {
@@ -78,6 +79,8 @@ const router = createBrowserRouter([
     }
 ])
 
+export const queryClient = new QueryClient();
+
 const ThemedApp = () => {
     const [mode, setMode] = useState("dark")
     const [showForm, setShowForm] = useState(false);
@@ -113,7 +116,9 @@ const ThemedApp = () => {
 
     return <ThemeProvider theme={theme}>
         <AppContext.Provider value={data}>
-            <RouterProvider router={router} />
+            <QueryClientProvider client={queryClient} >
+                <RouterProvider router={router} />
+            </QueryClientProvider>
             <CssBaseline />
         </AppContext.Provider>
     </ThemeProvider>

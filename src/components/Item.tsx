@@ -1,4 +1,3 @@
-import React from "react"
 import { useNavigate } from "react-router-dom"
 
 // icons
@@ -9,21 +8,17 @@ import { green } from "@mui/material/colors"
 
 // components
 import { Box, Card, CardContent, IconButton, Typography } from "@mui/material"
+import { PostProps } from "@types/types"
 
 
 type PropsType = {
-    item: {
-        id: number
-        content: string
-        name: string
-        primary?: boolean
-    }
+    item: PostProps
     onRemove: (id: number) => void,
 }
 
 const Item = ({ item, onRemove }: PropsType) => {
 
-    const { id, name, content, primary } = item;
+    const { id, user, content, primary } = item;
     const navigate = useNavigate();
 
     return (
@@ -67,7 +62,7 @@ const Item = ({ item, onRemove }: PropsType) => {
                         fontSize="medium"
                         color="info"
                     />
-                    <Typography variant="body1">{name}</Typography>
+                    <Typography variant="body1">{user.name}</Typography>
                 </Box>
             </CardContent>
         </Card>
