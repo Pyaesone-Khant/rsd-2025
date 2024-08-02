@@ -1,24 +1,23 @@
 {
-  "compilerOptions": {
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"strict": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"moduleResolution": "Node",
 
-    "target": "ESNext",
-    "module": "ESNext",
-    "strict": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node",
+		"esModuleInterop": true,
+		"jsx": "react-jsx",
+		"allowJs": true,
 
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "allowJs": true,
-
-    // absolute paths
-    "baseUrl": ".",
-    "paths": {
-      "@src/*": ["./src/*"],
-      "@types/*": ["./types/*"]
-    }
-  },
-  "include": ["src", "types"],
-  "exclude": ["node_modules"]
+		// absolute paths
+		"baseUrl": ".",
+		"paths": {
+			"@src/*": ["./src/*"],
+			"@typings/*": ["typings/*"]
+		}
+	},
+	"include": ["src", "typings"],
+	"exclude": ["node_modules"]
 }

@@ -8,7 +8,11 @@ export default defineConfig({
     resolve: {
         alias: {
             "@src/*": "src/*",
-            "@types/*": "types/*"
+            "@typings/*": "typings/*"
         }
+    },
+    server: {
+        port: 3000,
+        open: true
     }
 })

@@ -1,14 +1,14 @@
-export interface PostProps{
+export interface PostProps {
     id: number;
     content: string;
     name: string;
     userId: number
     user: UserProps
     comments?: CommentProps[]
-    primary?: boolean
+    created: string
 }
 
-export interface UserProps{
+export interface UserProps {
     id: number
     name: string
     username: string
@@ -17,11 +17,12 @@ export interface UserProps{
     comments?: CommentProps[]
 }
 
-export interface CommentProps{
+export interface CommentProps {
     id: number
     content: string
     userId: number
     postId: number
-    user?: UserProps
+    user: UserProps
     post?: PostProps
+    created: string
 }

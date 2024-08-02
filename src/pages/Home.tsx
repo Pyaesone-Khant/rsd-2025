@@ -1,3 +1,5 @@
+// types
+import { PostProps } from '@typings/types'
 
 // components
 import { Alert, Box } from '@mui/material'
@@ -5,8 +7,9 @@ import { Form, Item } from '@src/components'
 
 // context
 import { queryClient, useApp } from '@src/ThemedApp'
-import { PostProps } from '@types/types'
-import { useMutation, useQuery } from 'react-query'
+
+// react-query
+import { QueryKey, useMutation, useQuery } from 'react-query'
 
 const api = import.meta.env.VITE_API
 
@@ -14,7 +17,7 @@ const Home = () => {
 
     const { showForm, setShowForm, setAlert } = useApp()
 
-    const {data, isLoading, error, isError} = useQuery({
+    const { data, isLoading, error, isError } = useQuery<unknown, Error, PostProps[], QueryKey[]>({
         queryKey: ["posts"],
         queryFn: async () => {
             const res = await fetch(`${api}/posts`);
@@ -30,28 +33,28 @@ const Home = () => {
     }
 
     const removePost = useMutation(async (id: number) => {
-            const res = await fetch(`${api}/posts/${id}`, { method: "DELETE" });
-            return res.json();
-        },
+        const res = await fetch(`${api}/posts/${id}`, { method: "DELETE" });
+        return res.json();
+    },
         {
             onMutate: id => {
                 queryClient.cancelQueries("posts");
-                queryClient.setQueryData("posts", (old) => old.filter(item => item?.id !== id));
-                setAlert({alertType: "success", alertMsg: "Post deleted!"})
+                queryClient.setQueryData("posts", (old: unknown[] | undefined) => (old || []).filter((item) => item?.id !== id));
+                setAlert({ alertType: "success", alertMsg: "Post deleted!" })
             }
         }
     )
 
 
 
-    if(isError) return (
+    if (isError) return (
         <Box>
-            <Alert severity="warning">Error Fetching Data!</Alert>
+            <Alert severity="warning">Error Fetching Data! || {error?.message}</Alert>
         </Box>
     )
 
-    if(isLoading) return (
-        <Box sx={{textAlign: "center"}} >
+    if (isLoading) return (
+        <Box sx={{ textAlign: "center" }} >
             Loading...
         </Box>
     )
@@ -63,7 +66,7 @@ const Home = () => {
             }
 
             {
-                data.map((item: PostProps) => <Item key={item.id} item={item} onRemove={removePost.mutate} />)
+                data?.map((item: PostProps) => <Item key={item.id} item={item} onRemove={removePost.mutate} />)
             }
         </Box>
     )

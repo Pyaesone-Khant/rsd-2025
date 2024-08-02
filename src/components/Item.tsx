@@ -6,25 +6,35 @@ import { Delete as DeleteIcon, Alarm as TimeIcon, AccountCircle as UserIcon } fr
 // colors
 import { green } from "@mui/material/colors"
 
+// types
+import { CommentProps, PostProps } from "@typings/types"
+
 // components
 import { Box, Card, CardContent, IconButton, Typography } from "@mui/material"
-import { PostProps } from "@types/types"
+
+// thrid-party
+import { formatRelative } from "date-fns"
 
 
 type PropsType = {
-    item: PostProps
+    item: PostProps | CommentProps
     onRemove: (id: number) => void,
+    primary?: boolean,
+    comment?: boolean
 }
 
-const Item = ({ item, onRemove }: PropsType) => {
+const Item = ({ item, onRemove, primary, comment }: PropsType) => {
 
-    const { id, user, content, primary } = item;
+    const { id, user, content, created } = item;
     const navigate = useNavigate();
 
     return (
         <Card sx={{ mb: 2 }} >
             {primary && <Box sx={{ height: 50, bgcolor: green[500] }} />}
-            <CardContent onClick={() => navigate(`/comments/${id}`)} >
+            <CardContent onClick={() => {
+                if (comment) return false;
+                navigate(`/comments/${id}`)
+            }} sx={{ cursor: comment ? "auto" : "pointer" }} >
                 <Box sx={{
                     display: "flex",
                     flexDirection: "row",
@@ -38,7 +48,7 @@ const Item = ({ item, onRemove }: PropsType) => {
                     }} >
                         <TimeIcon fontSize="small" color="success" />
                         <Typography variant="caption" sx={{ color: green[500] }} >
-                            A few second ago
+                            {formatRelative(created, new Date())}
                         </Typography>
                     </Box>
                     <IconButton size="small" onClick={(e) => {

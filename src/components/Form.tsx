@@ -1,9 +1,13 @@
-import React, { FormEvent, useRef } from 'react';
+import { FormEvent, useRef } from 'react';
 
 // components
 import { Box, Button, TextField } from '@mui/material';
 
-const Form = ({ add }) => {
+type PropsType = {
+    add: (args: { content: string, name: string }) => void
+}
+
+const Form = ({ add }: PropsType) => {
 
     const contentRef = useRef<HTMLInputElement>(null);
 
