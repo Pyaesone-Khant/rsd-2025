@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 // colors
 import { deepPurple, grey } from "@mui/material/colors";
 
@@ -10,8 +10,10 @@ import { CommentsPage, HomePage, LikesPage, LoginPage, ProfilePage, RegisterPage
 import Template from "@src/Template";
 
 // react router
+import { UserProps } from "@typings/types";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { fetchVerify } from "./libs/fetcher";
 
 declare module '@mui/material/styles' {
     interface Palette {
@@ -34,8 +36,8 @@ interface AppContextType {
     setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
     showDrawer: boolean;
     setShowDrawer: React.Dispatch<React.SetStateAction<boolean>>;
-    auth: boolean
-    setAuth: React.Dispatch<React.SetStateAction<boolean>>
+    auth: null | UserProps
+    setAuth: React.Dispatch<React.SetStateAction<null | UserProps>>
     alert: AlertType | null
     setAlert: React.Dispatch<React.SetStateAction<AlertType | null>>
 }
@@ -85,15 +87,22 @@ const ThemedApp = () => {
     const [mode, setMode] = useState("dark")
     const [showForm, setShowForm] = useState(false);
     const [showDrawer, setShowDrawer] = useState(false);
-    const [auth, setAuth] = useState<boolean>(false)
+    const [auth, setAuth] = useState<null | UserProps>(null)
     const [alert, setAlert] = useState<AlertType | null>(null);
+
+    useEffect(() => {
+        fetchVerify().then((user: UserProps) => {
+            if(user) setAuth(user);
+        })
+
+    }, [])
 
     const theme = useMemo(() => {
         return createTheme({
             palette: {
                 mode: mode as PaletteMode,
                 primary: deepPurple,
-                banner: mode === "dark" ? grey[900] : grey[100],
+                banner: mode === "dark" ? grey[900] : grey[300],
                 text: {
                     primary: mode === "dark" ? grey[300] : grey[700]
                 }

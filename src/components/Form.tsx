@@ -4,7 +4,7 @@ import { FormEvent, useRef } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 
 type PropsType = {
-    add: (args: { content: string, name: string }) => void
+    add: (content: string) => void
 }
 
 const Form = ({ add }: PropsType) => {
@@ -14,13 +14,12 @@ const Form = ({ add }: PropsType) => {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         const content = contentRef.current?.value;
-        const name = "VNL"
 
-        if (!content || !name) {
-            alert('Please fill all fields');
+        if (!content) {
+            alert('Content is required!');
             return;
         }
-        add({ content, name });
+        add(content);
         (e.currentTarget as HTMLFormElement).reset();
     }
 
@@ -31,7 +30,6 @@ const Form = ({ add }: PropsType) => {
     }}>
         <Box sx={{ mb: 4, textAlign: 'right' }} >
             <TextField inputRef={contentRef} type='text' placeholder='Content' fullWidth multiline sx={{ mb: 1 }} />
-            {/* <TextField inputRef={nameRef} type='text' placeholder='Name' fullWidth multiline sx={{ mb: 1 }} /> */}
             <Button variant='contained' type='submit' >
                 Post
             </Button>

@@ -13,7 +13,9 @@ import { CommentProps, PostProps } from "@typings/types"
 import { Box, Card, CardContent, IconButton, Typography } from "@mui/material"
 
 // thrid-party
+import { useApp } from "@src/ThemedApp"
 import { formatRelative } from "date-fns"
+import React from "react"
 
 
 type PropsType = {
@@ -25,8 +27,11 @@ type PropsType = {
 
 const Item = ({ item, onRemove, primary, comment }: PropsType) => {
 
+    const {auth} = useApp()
     const { id, user, content, created } = item;
     const navigate = useNavigate();
+
+    const isAuthor = user.id == auth?.id
 
     return (
         <Card sx={{ mb: 2 }} >
@@ -34,7 +39,7 @@ const Item = ({ item, onRemove, primary, comment }: PropsType) => {
             <CardContent onClick={() => {
                 if (comment) return false;
                 navigate(`/comments/${id}`)
-            }} sx={{ cursor: comment ? "auto" : "pointer" }} >
+            }} sx={{ cursor: comment ? "auto" : "pointer", bgcolor: "banner" }} >
                 <Box sx={{
                     display: "flex",
                     flexDirection: "row",
@@ -51,17 +56,23 @@ const Item = ({ item, onRemove, primary, comment }: PropsType) => {
                             {formatRelative(created, new Date())}
                         </Typography>
                     </Box>
-                    <IconButton size="small" onClick={(e) => {
-                        onRemove(id)
-                        e.stopPropagation()
-                    }} >
-                        <DeleteIcon fontSize="inherit" />
-                    </IconButton>
+                    {
+                        isAuthor && <IconButton size="small" onClick={(e: React.MouseEvent<HTMLButtonElement | MouseEvent>) => {
+                            onRemove(id)
+                            e.stopPropagation()
+                        }} >
+                            <DeleteIcon fontSize="inherit" color="error" />
+                        </IconButton>
+                    }
                 </Box>
                 <Typography sx={{ my: 3 }} >
                     {content}
                 </Typography>
                 <Box
+                onClick={(e: React.MouseEvent) => {
+                    navigate(`/profile/${user.id}`);
+                    e.stopPropagation();
+                }}
                     sx={{
                         display: "flex",
                         flexDirection: "row",

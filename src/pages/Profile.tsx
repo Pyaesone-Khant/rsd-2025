@@ -3,10 +3,30 @@
 import { pink } from '@mui/material/colors'
 
 // components
-import { Avatar, Box, Typography } from '@mui/material'
+import { Alert, Avatar, Box, Typography } from '@mui/material'
 import { Item } from '@src/components'
+import { fetchUser } from '@src/libs/fetcher'
+import { PostProps, UserProps } from '@typings/types'
+import { QueryKey, useQuery } from 'react-query'
+import { useParams } from 'react-router-dom'
 
 const Profile = () => {
+
+    const {id} = useParams();
+
+    const {data: user, isLoading, isError, error} = useQuery<UserProps, Error, UserProps, QueryKey>(`users/${id}`, async () => fetchUser(id as string));
+
+    console.log(user)
+
+    if(isError){
+        return <Box>
+            <Alert severity="warning" >{error.message}</Alert>
+        </Box>
+    }
+
+    if(isLoading){
+        return <Box sx={{textAlign: "center"}} >Loading . . .</Box>
+    }
 
     return (
         <Box>
@@ -22,17 +42,15 @@ const Profile = () => {
             }}>
                 <Avatar sx={{ width: 100, height: 100, bgcolor: pink[500] }} />
                 <Box sx={{ textAlign: "center" }} >
-                    <Typography>VNL</Typography>
+                    <Typography variant='h6'>{user?.name}</Typography>
                     <Typography sx={{ fontSize: "0.8em", color: "text.primary" }}>
-                        VNL's profile bio content is here!
+                        {user?.bio}
                     </Typography>
                 </Box>
             </Box>
-            <Item key={1} onRemove={() => { }} item={{
-                id: 1,
-                content: "Keep Smiling! Your smile makes all the darkness fade away!",
-                name: "VNL"
-            }} />
+            {
+                user?.posts?.map((post: PostProps) => <Item key={post.id} item={post} onRemove={() => {}} />)
+            }
         </Box>
     )
 }

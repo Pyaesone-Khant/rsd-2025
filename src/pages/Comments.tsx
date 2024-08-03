@@ -11,6 +11,8 @@ import { Item } from '@src/components';
 import { queryClient, useApp } from '@src/ThemedApp';
 
 // react-query
+import { postComment } from '@src/libs/fetcher';
+import { useRef } from 'react';
 import { useMutation, useQuery } from 'react-query';
 
 const api = import.meta.env.VITE_API
@@ -18,6 +20,8 @@ const api = import.meta.env.VITE_API
 const Comments = () => {
 
     const { id } = useParams();
+
+    const contentInput = useRef<HTMLInputElement>()
     const navigate = useNavigate();
 
     const { setAlert } = useApp();
@@ -39,6 +43,27 @@ const Comments = () => {
                 setAlert({ alertMsg: "Post Deleted", alertType: "success" })
         },
     );
+
+    const onComment = (e: React.FormEvent) => {
+        e.preventDefault();
+        const content = contentInput.current && contentInput.current.value;
+
+        if(!content) return false;
+
+        addComment.mutate(content);
+        (e.currentTarget as HTMLFormElement).reset();
+    }
+
+    const addComment = useMutation(async (content: string) => postComment({content, postId: Number(id)}), {
+        onSuccess: async (comment: CommentProps) => {
+            await queryClient.cancelQueries("comments");
+            await queryClient.setQueryData("comments", (old) => {
+                old.comments = [...old.comments, comment];
+                return {...old};
+            })
+            setAlert({alertMsg: "Comment added successfully!", alertType: "success"})
+        }
+    } )
 
     const removeComment = useMutation(
         async (id: number) => {
@@ -80,10 +105,10 @@ const Comments = () => {
             {
                 post?.comments?.map((comment: CommentProps) => <Item key={comment.id} item={comment} onRemove={() => removeComment.mutate(comment.id)} comment />)
             }
-            <form>
+            <form onSubmit={onComment}>
                 <Box
                     sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 3, }}>
-                    <TextField multiline placeholder="Your Comment" />
+                    <TextField inputRef={contentInput} multiline placeholder="Your Comment" />
                     <Button type="submit" variant="contained">Reply</Button>
                 </Box>
             </form>

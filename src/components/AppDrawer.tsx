@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // icons
@@ -20,13 +20,12 @@ const AppDrawer = () => {
 
     const handleNavigate = (path: string) => {
         navigate(path);
-        setShowDrawer(false);
     }
 
     const handleLogout = () => {
         navigate("/");
-        setAuth(false);
-        setShowDrawer(false)
+        setAuth(null);
+        localStorage.removeItem("yaychaToken")
         setAlert({ alertType: "success", alertMsg: "Logout success!" })
     }
 
@@ -62,16 +61,16 @@ const AppDrawer = () => {
                             }}
                         />
                         <Typography sx={{ fontWeight: "bold" }} >
-                            VNL
+                            {auth ? auth.name : "VNL"}
                         </Typography>
                     </Box>
                 </Box>
-                <List>
+                <List onClick={() => setShowDrawer(false)}>
                     <MenuItem icon={<HomeIcon />} label='Home' event={() => handleNavigate("/")} />
                     <Divider />
                     {
                         auth && <>
-                            <MenuItem icon={<ProfileIcon />} label='Profile' event={() => handleNavigate("/profile/1")} />
+                            <MenuItem icon={<ProfileIcon />} label='Profile' event={() => handleNavigate(`/profile/${auth.id}`)} />
                             <MenuItem icon={<LogoutIcon color='error' />} label='Logout' event={handleLogout} />
                         </>
                     }

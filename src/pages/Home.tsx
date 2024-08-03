@@ -9,6 +9,7 @@ import { Form, Item } from '@src/components'
 import { queryClient, useApp } from '@src/ThemedApp'
 
 // react-query
+import { postPost } from '@src/libs/fetcher'
 import { QueryKey, useMutation, useQuery } from 'react-query'
 
 const api = import.meta.env.VITE_API
@@ -25,12 +26,13 @@ const Home = () => {
         }
     })
 
-    const addItem = ({ content, name }: { content: string, name: string }) => {
-        // const id = data?.length ? data[data.length - 1].id + 1 : 1;
-        // setData([...data, { id, content, name }]);
-        setAlert({ alertType: "success", alertMsg: "Item added successfully." });
-        setShowForm(false)
-    }
+    const addItem = useMutation(async (content: string) => postPost(content), {
+        onSuccess: async (post: PostProps) => {
+            await queryClient.cancelQueries("posts");
+            await queryClient.setQueryData("posts", old => [post, ...old]);
+            setAlert({alertMsg: "Post added successfully!", alertType: "success"})
+        }
+    })
 
     const removePost = useMutation(async (id: number) => {
         const res = await fetch(`${api}/posts/${id}`, { method: "DELETE" });
@@ -62,7 +64,7 @@ const Home = () => {
     return (
         <Box>
             {
-                showForm && <Form add={addItem} />
+                showForm && <Form add={addItem.mutate} />
             }
 
             {

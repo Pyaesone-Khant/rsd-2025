@@ -1,8 +1,7 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // icons
-import { Add as AddIcon, DarkMode as DarkModeIcon, LightMode as LightModeIcon, Menu as MenuIcon } from '@mui/icons-material';
+import { Add as AddIcon, CloseOutlined as CloseIcon, DarkMode as DarkModeIcon, LightMode as LightModeIcon, Menu as MenuIcon } from '@mui/icons-material';
 
 // components
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
@@ -30,7 +29,7 @@ const Header = () => {
                     <IconButton
                         color='inherit'
                         onClick={() => setShowForm(!showForm)} >
-                        <AddIcon />
+                        { showForm ? <CloseIcon/> : <AddIcon/> }
                     </IconButton>
                     <IconButton color='inherit' edge='end' onClick={toggleMode} >
                         {

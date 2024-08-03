@@ -12,9 +12,17 @@ export interface UserProps {
     id: number
     name: string
     username: string
+    password?: string
     bio?: string
     posts?: PostProps[]
     comments?: CommentProps[]
+}
+
+export interface CreateUserProps{
+    name: string
+    username: string
+    password: string
+    bio?: string
 }
 
 export interface CommentProps {
