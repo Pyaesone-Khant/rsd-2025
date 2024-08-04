@@ -16,6 +16,7 @@ import { Box, Card, CardContent, IconButton, Typography } from "@mui/material"
 import { useApp } from "@src/ThemedApp"
 import { formatRelative } from "date-fns"
 import React from "react"
+import LikeButton from "./LikeButton"
 
 
 type PropsType = {
@@ -68,7 +69,13 @@ const Item = ({ item, onRemove, primary, comment }: PropsType) => {
                 <Typography sx={{ my: 3 }} >
                     {content}
                 </Typography>
-                <Box
+               <Box sx={{
+                     display: "flex",
+                     flexDirection: "row",
+                     justifyContent: "space-between",
+                     alignItems: "center"
+               }} >
+               <Box
                 onClick={(e: React.MouseEvent) => {
                     navigate(`/profile/${user.id}`);
                     e.stopPropagation();
@@ -85,6 +92,8 @@ const Item = ({ item, onRemove, primary, comment }: PropsType) => {
                     />
                     <Typography variant="body1">{user.name}</Typography>
                 </Box>
+                <LikeButton item={item} comment={comment} />
+               </Box>
             </CardContent>
         </Card>
     )

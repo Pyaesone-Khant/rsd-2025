@@ -5,6 +5,7 @@ export interface PostProps {
     userId: number
     user: UserProps
     comments?: CommentProps[]
+    likes:  PostLikeProps[]
     created: string
 }
 
@@ -16,6 +17,10 @@ export interface UserProps {
     bio?: string
     posts?: PostProps[]
     comments?: CommentProps[]
+    postLikes: PostLikeProps[]
+    commentLikes: CommentLikeProps[]
+    followers?: FollowerProps[]
+    following?: FollowingProps[]
 }
 
 export interface CreateUserProps{
@@ -33,4 +38,35 @@ export interface CommentProps {
     user: UserProps
     post?: PostProps
     created: string
+    likes: CommentLikeProps[]
+}
+
+export interface PostLikeProps{
+    id: number
+    userId: number
+    postId: number
+    user: UserProps
+    post: PostProps
+    created: string
+}
+
+export interface CommentLikeProps{
+    id: number
+    userId: number
+    commentId: number
+    user: UserProps
+    comment: CommentProps
+    created: string
+}
+
+export interface FollowerProps{
+    id: number
+    follower: UserProps
+    followerId: number
+}
+
+export interface FollowingProps{
+    id: number
+    following: UserProps
+    followingId: number
 }

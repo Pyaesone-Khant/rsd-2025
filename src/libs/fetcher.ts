@@ -108,7 +108,7 @@ export async function postComment(data: {content: string, postId: number}){
 export async function postPostLike(id: number){
     const token = getToken();
 
-    const res = await fetch(`${api}/post/${id}/like`, {
+    const res = await fetch(`${api}/posts/${id}/like`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`
@@ -120,7 +120,7 @@ export async function postPostLike(id: number){
 export async function postCommentLike(id: number){
     const token = getToken();
 
-    const res = await fetch(`${api}/comment/${id}/like`, {
+    const res = await fetch(`${api}/comments/${id}/like`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`
