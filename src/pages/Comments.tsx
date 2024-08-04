@@ -11,6 +11,7 @@ import { Item } from '@src/components';
 import { queryClient, useApp } from '@src/ThemedApp';
 
 // react-query
+import { ArrowLeftOutlined } from '@mui/icons-material';
 import { postComment } from '@src/libs/fetcher';
 import { useRef } from 'react';
 import { useMutation, useQuery } from 'react-query';
@@ -101,6 +102,9 @@ const Comments = () => {
 
     return (
         <Box>
+            <Button size='small' variant='text' onClick={() => navigate(-1)} sx={{mb: 2}} >
+                <ArrowLeftOutlined/> Back
+            </Button>
             <Item item={post!} onRemove={() => post?.id && removePost.mutate(post.id)} primary />
             {
                 post?.comments?.map((comment: CommentProps) => <Item key={comment.id} item={comment} onRemove={() => removeComment.mutate(comment.id)} comment />)

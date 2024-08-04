@@ -1,3 +1,4 @@
+import React from "react"
 import { useNavigate } from "react-router-dom"
 
 // icons
@@ -11,12 +12,13 @@ import { CommentProps, PostProps } from "@typings/types"
 
 // components
 import { Box, Card, CardContent, IconButton, Typography } from "@mui/material"
+import { CommentButton, LikeButton } from "@src/components"
+
+// context
+import { useApp } from "@src/ThemedApp"
 
 // thrid-party
-import { useApp } from "@src/ThemedApp"
 import { formatRelative } from "date-fns"
-import React from "react"
-import LikeButton from "./LikeButton"
 
 
 type PropsType = {
@@ -92,7 +94,10 @@ const Item = ({ item, onRemove, primary, comment }: PropsType) => {
                     />
                     <Typography variant="body1">{user.name}</Typography>
                 </Box>
+                <Box>
                 <LikeButton item={item} comment={comment} />
+                <CommentButton item={item} comment={comment} />
+                </Box>
                </Box>
             </CardContent>
         </Card>

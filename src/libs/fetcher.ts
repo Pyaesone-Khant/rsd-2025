@@ -156,12 +156,12 @@ export async function deleteCommentLike(id: number){
     return res.json();
 }
 
-export async function fetchPostLikes(postId: number){
+export async function fetchPostLikes(postId: string){
     const res = await fetch(`${api}/posts/${postId}/likes`);
     return res.json();
 }
 
-export async function fetchCommentLikes(commentId: number){
+export async function fetchCommentLikes(commentId: string){
     const res = await fetch(`${api}/comments/${commentId}/likes`);
     return res.json();
 }

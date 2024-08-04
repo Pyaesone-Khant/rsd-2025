@@ -1,20 +1,39 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom';
+
+// types
+import { CommentLikeProps, PostLikeProps } from '@typings/types';
 
 // components
-import { Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
+import { ArrowLeftOutlined } from '@mui/icons-material';
+import { Avatar, Box, Button, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Typography } from '@mui/material';
 
-const UserList = ({ title }: { title: string }) => {
+const UserList = ({ title, data }: { title: string, data: PostLikeProps[] | CommentLikeProps[] }) => {
+
+    const navigate = useNavigate();
+
     return (
         <Box>
-            <Typography variant='h4'>{title}</Typography>
+            <Button size='small' variant='text' onClick={() => navigate(-1)} sx={{mb: 2}}  >
+                <ArrowLeftOutlined/> Back
+            </Button>
+            <Typography variant='h4' sx={{textAlign: "center"}}>{title}</Typography>
             <List>
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar />
-                    </ListItemAvatar>
-                    <ListItemText primary="VNL @mario"
-                        secondary="VNL's profile bio" />
-                </ListItem>
+                {
+                    data?.map(item => {
+                        return (
+                            <ListItem key={item.id} >
+                                <ListItemButton onClick={() => navigate(`/profile/${item.userId}`)} >
+
+                                    <ListItemAvatar>
+                                        <Avatar />
+                                    </ListItemAvatar>
+                                    <ListItemText primary={item.user.name}
+                                        secondary={item.user?.bio} />
+                                </ListItemButton>
+                            </ListItem>
+                        )
+                    })
+                }
             </List>
         </Box>
     )

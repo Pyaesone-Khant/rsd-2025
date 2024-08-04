@@ -1,13 +1,23 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
 // icons
 import { Favorite as LikedIcon, FavoriteBorder as LikeIcon } from "@mui/icons-material";
 
-import { Button, ButtonGroup, IconButton } from "@mui/material";
-import { deleteCommentLike, deletePostLike, postCommentLike, postPostLike } from "@src/libs/fetcher";
-import { queryClient, useApp } from "@src/ThemedApp";
+// types
 import { CommentProps, PostProps } from "@typings/types";
-import React from "react";
+
+// components
+import { Button, ButtonGroup, IconButton } from "@mui/material";
+
+// apis
+import { deleteCommentLike, deletePostLike, postCommentLike, postPostLike } from "@src/libs/fetcher";
+
+// context
+import { queryClient, useApp } from "@src/ThemedApp";
+
+// react-query
 import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom";
 
 
 const LikeButton = ({item, comment}: {item: PostProps | CommentProps, comment?: boolean }) => {

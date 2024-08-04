@@ -74,9 +74,9 @@ const router = createBrowserRouter([
                 element: <CommentsPage />
             },
             {
-                path: "/likes/:id",
+                path: "/likes/:id/:type",
                 element: <LikesPage />
-            }
+            },
         ]
     }
 ])
