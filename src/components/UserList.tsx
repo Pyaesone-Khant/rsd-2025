@@ -5,7 +5,8 @@ import { CommentLikeProps, PostLikeProps } from '@typings/types';
 
 // components
 import { ArrowLeftOutlined } from '@mui/icons-material';
-import { Avatar, Box, Button, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Typography } from '@mui/material';
+import { Avatar, Box, Button, List, ListItem, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, Typography } from '@mui/material';
+import FollowButton from './FollowButton';
 
 const UserList = ({ title, data }: { title: string, data: PostLikeProps[] | CommentLikeProps[] }) => {
 
@@ -13,10 +14,10 @@ const UserList = ({ title, data }: { title: string, data: PostLikeProps[] | Comm
 
     return (
         <Box>
-            <Button size='small' variant='text' onClick={() => navigate(-1)} sx={{mb: 2}}  >
-                <ArrowLeftOutlined/> Back
+            <Button size='small' variant='text' onClick={() => navigate(-1)} sx={{ mb: 2 }}  >
+                <ArrowLeftOutlined /> Back
             </Button>
-            <Typography variant='h4' sx={{textAlign: "center"}}>{title}</Typography>
+            <Typography variant='h4' sx={{ textAlign: "center" }}>{title}</Typography>
             <List>
                 {
                     data?.map(item => {
@@ -29,6 +30,9 @@ const UserList = ({ title, data }: { title: string, data: PostLikeProps[] | Comm
                                     </ListItemAvatar>
                                     <ListItemText primary={item.user.name}
                                         secondary={item.user?.bio} />
+                                    <ListItemSecondaryAction>
+                                        <FollowButton user={item.user} />
+                                    </ListItemSecondaryAction>
                                 </ListItemButton>
                             </ListItem>
                         )

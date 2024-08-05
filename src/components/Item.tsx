@@ -30,7 +30,7 @@ type PropsType = {
 
 const Item = ({ item, onRemove, primary, comment }: PropsType) => {
 
-    const {auth} = useApp()
+    const { auth } = useApp()
     const { id, user, content, created } = item;
     const navigate = useNavigate();
 
@@ -68,37 +68,37 @@ const Item = ({ item, onRemove, primary, comment }: PropsType) => {
                         </IconButton>
                     }
                 </Box>
-                <Typography sx={{ my: 3 }} >
+                <Typography sx={{ my: 3, whiteSpace: "pre-line" }} >
                     {content}
                 </Typography>
-               <Box sx={{
-                     display: "flex",
-                     flexDirection: "row",
-                     justifyContent: "space-between",
-                     alignItems: "center"
-               }} >
-               <Box
-                onClick={(e: React.MouseEvent) => {
-                    navigate(`/profile/${user.id}`);
-                    e.stopPropagation();
-                }}
-                    sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 1,
-                    }}>
-                    <UserIcon
-                        fontSize="medium"
-                        color="info"
-                    />
-                    <Typography variant="body1">{user.name}</Typography>
+                <Box sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                }} >
+                    <Box
+                        onClick={(e: React.MouseEvent) => {
+                            navigate(`/profile/${user.id}`);
+                            e.stopPropagation();
+                        }}
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: 1,
+                        }}>
+                        <UserIcon
+                            fontSize="medium"
+                            color="info"
+                        />
+                        <Typography variant="body1">{user.name}</Typography>
+                    </Box>
+                    <Box>
+                        <LikeButton item={item} comment={comment} />
+                        <CommentButton item={item} comment={comment} />
+                    </Box>
                 </Box>
-                <Box>
-                <LikeButton item={item} comment={comment} />
-                <CommentButton item={item} comment={comment} />
-                </Box>
-               </Box>
             </CardContent>
         </Card>
     )

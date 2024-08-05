@@ -2,7 +2,7 @@ import { CreateUserProps } from "@typings/types";
 
 const api = import.meta.env.VITE_API;
 
-export async function register(data: CreateUserProps){
+export async function register(data: CreateUserProps) {
     const res = await fetch(`${api}/auth/register`, {
         method: "POST",
         body: JSON.stringify(data),
@@ -11,7 +11,7 @@ export async function register(data: CreateUserProps){
         }
     });
 
-    if(res.ok){
+    if (res.ok) {
         return res.json();
     }
 
@@ -19,7 +19,7 @@ export async function register(data: CreateUserProps){
 }
 
 
-export async function login(payload: {username: string, password: string}) {
+export async function login(payload: { username: string, password: string }) {
     const res = await fetch(`${api}/auth/login`, {
         method: "POST",
         body: JSON.stringify(payload),
@@ -28,18 +28,18 @@ export async function login(payload: {username: string, password: string}) {
         }
     });
 
-    if(res.ok){
+    if (res.ok) {
         return res.json();
     }
 
     throw new Error("Incorrect username or password!")
 }
 
-function getToken(){
+function getToken() {
     return localStorage.getItem("yaychaToken")
 }
 
-export async function fetchUser(id: string){
+export async function fetchUser(id: string) {
     const token = getToken();
     const res = await fetch(`${api}/users/${id}`, {
         headers: {
@@ -50,7 +50,7 @@ export async function fetchUser(id: string){
     return res.json();
 }
 
-export async function fetchVerify(){
+export async function fetchVerify() {
     const token = getToken();
 
     const res = await fetch(`${api}/users/verify`, {
@@ -59,33 +59,33 @@ export async function fetchVerify(){
         }
     })
 
-    if(res.ok){
+    if (res.ok) {
         return res.json();
     }
 
     return false;
 }
 
-export async function postPost(content: string){
+export async function postPost(content: string) {
     const token = getToken();
 
     const res = await fetch(`${api}/posts`, {
         method: "POST",
-        body: JSON.stringify({content}),
+        body: JSON.stringify({ content }),
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         }
     })
 
-    if(res.ok){
+    if (res.ok) {
         return res.json();
     }
 
     throw new Error("Error: Check Network Log!")
 }
 
-export async function postComment(data: {content: string, postId: number}){
+export async function postComment(data: { content: string, postId: number }) {
     const token = getToken();
 
     const res = await fetch(`${api}/comments`, {
@@ -97,7 +97,7 @@ export async function postComment(data: {content: string, postId: number}){
         }
     })
 
-    if(res.ok){
+    if (res.ok) {
         return res.json();
     }
 
@@ -105,7 +105,7 @@ export async function postComment(data: {content: string, postId: number}){
 }
 
 
-export async function postPostLike(id: number){
+export async function postPostLike(id: number) {
     const token = getToken();
 
     const res = await fetch(`${api}/posts/${id}/like`, {
@@ -117,7 +117,7 @@ export async function postPostLike(id: number){
     return res.json()
 }
 
-export async function postCommentLike(id: number){
+export async function postCommentLike(id: number) {
     const token = getToken();
 
     const res = await fetch(`${api}/comments/${id}/like`, {
@@ -130,7 +130,7 @@ export async function postCommentLike(id: number){
     return res.json();
 }
 
-export async function deletePostLike(id: number){
+export async function deletePostLike(id: number) {
     const token = getToken();
 
     const res = await fetch(`${api}/posts/${id}/unlike`, {
@@ -143,7 +143,7 @@ export async function deletePostLike(id: number){
     return res.json();
 }
 
-export async function deleteCommentLike(id: number){
+export async function deleteCommentLike(id: number) {
     const token = getToken();
 
     const res = await fetch(`${api}/comments/${id}/unlike`, {
@@ -156,12 +156,38 @@ export async function deleteCommentLike(id: number){
     return res.json();
 }
 
-export async function fetchPostLikes(postId: string){
+export async function fetchPostLikes(postId: string) {
     const res = await fetch(`${api}/posts/${postId}/likes`);
     return res.json();
 }
 
-export async function fetchCommentLikes(commentId: string){
+export async function fetchCommentLikes(commentId: string) {
     const res = await fetch(`${api}/comments/${commentId}/likes`);
+    return res.json();
+}
+
+export async function postFollow(id: number) {
+    const token = getToken();
+
+    const res = await fetch(`${api}/users/${id}/follow`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    return res.json();
+}
+
+export async function deleteFollow(id: number) {
+    const token = getToken();
+
+    const res = await fetch(`${api}/users/${id}/unfollow`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
     return res.json();
 }

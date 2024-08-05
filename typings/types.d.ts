@@ -5,7 +5,7 @@ export interface PostProps {
     userId: number
     user: UserProps
     comments?: CommentProps[]
-    likes:  PostLikeProps[]
+    likes: PostLikeProps[]
     created: string
 }
 
@@ -19,11 +19,11 @@ export interface UserProps {
     comments?: CommentProps[]
     postLikes: PostLikeProps[]
     commentLikes: CommentLikeProps[]
-    followers?: FollowerProps[]
-    following?: FollowingProps[]
+    followers?: FollowProps[]
+    following?: FollowProps[]
 }
 
-export interface CreateUserProps{
+export interface CreateUserProps {
     name: string
     username: string
     password: string
@@ -41,7 +41,7 @@ export interface CommentProps {
     likes: CommentLikeProps[]
 }
 
-export interface PostLikeProps{
+export interface PostLikeProps {
     id: number
     userId: number
     postId: number
@@ -50,7 +50,7 @@ export interface PostLikeProps{
     created: string
 }
 
-export interface CommentLikeProps{
+export interface CommentLikeProps {
     id: number
     userId: number
     commentId: number
@@ -59,14 +59,10 @@ export interface CommentLikeProps{
     created: string
 }
 
-export interface FollowerProps{
+export interface FollowProps {
     id: number
-    follower: UserProps
+    followers: UserProps
     followerId: number
-}
-
-export interface FollowingProps{
-    id: number
     following: UserProps
     followingId: number
 }
