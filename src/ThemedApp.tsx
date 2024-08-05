@@ -6,7 +6,7 @@ import { deepPurple, grey } from "@mui/material/colors";
 import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from "@mui/material";
 
 // components
-import { CommentsPage, HomePage, LikesPage, LoginPage, ProfilePage, RegisterPage } from "@src/pages";
+import { CommentsPage, HomePage, LikesPage, LoginPage, ProfilePage, RegisterPage, SearchPage } from "@src/pages";
 import Template from "@src/Template";
 
 // react router
@@ -77,6 +77,10 @@ const router = createBrowserRouter([
                 path: "/likes/:id/:type",
                 element: <LikesPage />
             },
+            {
+                path: "/search",
+                element: <SearchPage />
+            }
         ]
     }
 ])
@@ -92,7 +96,7 @@ const ThemedApp = () => {
 
     useEffect(() => {
         fetchVerify().then((user: UserProps) => {
-            if(user) setAuth(user);
+            if (user) setAuth(user);
         })
 
     }, [])
