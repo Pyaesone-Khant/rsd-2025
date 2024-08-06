@@ -6,7 +6,7 @@ import { deepPurple, grey } from "@mui/material/colors";
 import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from "@mui/material";
 
 // components
-import { CommentsPage, HomePage, LikesPage, LoginPage, ProfilePage, RegisterPage, SearchPage } from "@src/pages";
+import { CommentsPage, HomePage, LikesPage, LoginPage, NotisPage, ProfilePage, RegisterPage, SearchPage } from "@src/pages";
 import Template from "@src/Template";
 
 // react router
@@ -80,6 +80,10 @@ const router = createBrowserRouter([
             {
                 path: "/search",
                 element: <SearchPage />
+            },
+            {
+                path: "/notis",
+                element: <NotisPage />
             }
         ]
     }
@@ -106,7 +110,7 @@ const ThemedApp = () => {
             palette: {
                 mode: mode as PaletteMode,
                 primary: deepPurple,
-                banner: mode === "dark" ? grey[900] : grey[300],
+                banner: mode === "dark" ? grey[900] : grey[200],
                 text: {
                     primary: mode === "dark" ? grey[300] : grey[700]
                 }

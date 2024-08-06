@@ -17,7 +17,7 @@ const api = import.meta.env.VITE_API
 
 const Home = () => {
 
-    const [showLatest, setShowLatest] = useState(false);
+    const [showLatest, setShowLatest] = useState(true);
     const { showForm, setAlert, auth } = useApp()
 
     // all posts
@@ -25,6 +25,8 @@ const Home = () => {
         if (showLatest) return fetchPosts();
         else return fetchFollowingPosts();
     })
+
+    console.log(data)
 
     const addItem = useMutation(async (content: string) => postPost(content), {
         onSuccess: async (post: PostProps) => {
@@ -94,7 +96,7 @@ const Home = () => {
             }
 
             {
-                data?.map((item: PostProps) => <Item key={item.id} item={item} onRemove={removePost.mutate} />)
+                data?.length === 0 ? <Alert severity="info" sx={{ textAlign: "center" }}>No Posts Found!</Alert> : data?.map((item: PostProps) => <Item key={item.id} item={item} onRemove={removePost.mutate} />)
             }
         </Box>
     )

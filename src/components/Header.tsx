@@ -1,21 +1,32 @@
 import { useNavigate } from 'react-router-dom';
 
 // icons
-import { Add as AddIcon, CloseOutlined as CloseIcon, DarkMode as DarkModeIcon, LightMode as LightModeIcon, Menu as MenuIcon, Search as SearchIcon } from '@mui/icons-material';
+import { Add as AddIcon, CloseOutlined as CloseIcon, DarkMode as DarkModeIcon, LightMode as LightModeIcon, Menu as MenuIcon, Notifications as NotiIcon, Search as SearchIcon } from '@mui/icons-material';
 
 // components
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Badge, Box, IconButton, Toolbar, Typography } from '@mui/material';
 
 // context
+import { fetchNotis } from '@src/libs/fetcher';
+import { NotiProps } from '@typings/types';
+import { QueryKey, useQuery } from 'react-query';
 import { useApp } from '../ThemedApp';
 
 const Header = () => {
 
-    const { showForm, setShowForm, mode, setMode, setShowDrawer } = useApp();
+    const { showForm, setShowForm, mode, setMode, setShowDrawer, auth } = useApp();
     const navigate = useNavigate();
 
     const toggleMode = () => {
         setMode(mode === 'light' ? 'dark' : 'light')
+    }
+
+    const { data, isLoading, isError, error } = useQuery<unknown, Error, NotiProps[], QueryKey>(["notis", auth], fetchNotis)
+
+    function notiCount() {
+        if (!auth) return 0;
+        if (isLoading || isError) return 0;
+        return data?.filter(noti => !noti.read).length;
     }
 
     return (
@@ -34,6 +45,13 @@ const Header = () => {
                     <IconButton color="inherit" onClick={() => navigate("/search")} >
                         <SearchIcon />
                     </IconButton>
+                    {
+                        auth && <IconButton color="inherit" onClick={() => navigate("/notis")} >
+                            <Badge color="error" badgeContent={notiCount()}>
+                                <NotiIcon />
+                            </Badge>
+                        </IconButton>
+                    }
                     <IconButton color='inherit' edge='end' onClick={toggleMode} >
                         {
                             mode === "dark" ? <LightModeIcon /> : <DarkModeIcon />

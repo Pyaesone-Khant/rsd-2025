@@ -12,12 +12,8 @@ import { QueryKey, useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 
 const Profile = () => {
-
     const { id } = useParams();
-
     const { data: user, isLoading, isError, error } = useQuery<UserProps, Error, UserProps, QueryKey>(["user", id], async () => fetchUser(id as string));
-
-    console.log(user)
 
     if (isError) {
         return <Box>

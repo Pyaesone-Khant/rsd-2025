@@ -66,3 +66,15 @@ export interface FollowProps {
     following: UserProps
     followingId: number
 }
+
+export interface NotiProps {
+    id: number
+    type: string
+    content: string
+    userId: number
+    user: UserProps
+    read: boolean
+    postId: number
+    post: PostProps
+    created: string
+}
