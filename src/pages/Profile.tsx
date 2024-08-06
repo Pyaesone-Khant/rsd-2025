@@ -15,7 +15,7 @@ const Profile = () => {
 
     const { id } = useParams();
 
-    const { data: user, isLoading, isError, error } = useQuery<UserProps, Error, UserProps, QueryKey>(`users/${id}`, async () => fetchUser(id as string));
+    const { data: user, isLoading, isError, error } = useQuery<UserProps, Error, UserProps, QueryKey>(["user", id], async () => fetchUser(id as string));
 
     console.log(user)
 

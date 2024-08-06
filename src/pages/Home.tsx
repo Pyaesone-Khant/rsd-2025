@@ -2,35 +2,35 @@
 import { PostProps } from '@typings/types'
 
 // components
-import { Alert, Box } from '@mui/material'
+import { Alert, Box, Button, Typography } from '@mui/material'
 import { Form, Item } from '@src/components'
 
 // context
 import { queryClient, useApp } from '@src/ThemedApp'
 
 // react-query
-import { postPost } from '@src/libs/fetcher'
+import { fetchFollowingPosts, fetchPosts, postPost } from '@src/libs/fetcher'
+import { useState } from 'react'
 import { QueryKey, useMutation, useQuery } from 'react-query'
 
 const api = import.meta.env.VITE_API
 
 const Home = () => {
 
-    const { showForm, setShowForm, setAlert } = useApp()
+    const [showLatest, setShowLatest] = useState(false);
+    const { showForm, setAlert, auth } = useApp()
 
-    const { data, isLoading, error, isError } = useQuery<unknown, Error, PostProps[], QueryKey[]>({
-        queryKey: ["posts"],
-        queryFn: async () => {
-            const res = await fetch(`${api}/posts`);
-            return res.json();
-        }
+    // all posts
+    const { data, isLoading, error, isError } = useQuery<unknown, Error, PostProps[], QueryKey>(["posts", showLatest], () => {
+        if (showLatest) return fetchPosts();
+        else return fetchFollowingPosts();
     })
 
     const addItem = useMutation(async (content: string) => postPost(content), {
         onSuccess: async (post: PostProps) => {
             await queryClient.cancelQueries("posts");
-            await queryClient.setQueryData("posts", old => [post, ...old]);
-            setAlert({alertMsg: "Post added successfully!", alertType: "success"})
+            await queryClient.setQueryData(["posts", showLatest], old => [post, ...old]);
+            setAlert({ alertMsg: "Post added successfully!", alertType: "success" })
         }
     })
 
@@ -46,8 +46,6 @@ const Home = () => {
             }
         }
     )
-
-
 
     if (isError) return (
         <Box>
@@ -65,6 +63,34 @@ const Home = () => {
         <Box>
             {
                 showForm && <Form add={addItem.mutate} />
+            }
+
+            {
+                auth && (<Box sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    mb: 1
+                }} >
+                    <Button
+                        disabled={showLatest}
+                        onClick={() => setShowLatest(true)}
+                    >
+                        Latest
+                    </Button>
+                    <Typography sx={{
+                        color: "text.fade",
+                        fontSize: 15
+                    }} >
+                        |
+                    </Typography>
+                    <Button
+                        disabled={!showLatest}
+                        onClick={() => setShowLatest(false)}
+                    >
+                        Following
+                    </Button>
+                </Box>)
             }
 
             {

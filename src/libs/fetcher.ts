@@ -66,6 +66,11 @@ export async function fetchVerify() {
     return false;
 }
 
+export async function fetchPosts() {
+    const res = await fetch(`${api}/posts`);
+    return res.json();
+}
+
 export async function postPost(content: string) {
     const token = getToken();
 
@@ -194,5 +199,16 @@ export async function deleteFollow(id: number) {
 
 export async function fetchSearch(q: string) {
     const res = await fetch(`${api}/search?q=${q}`);
+    return res.json();
+}
+
+export async function fetchFollowingPosts() {
+    const token = getToken();
+    const res = await fetch(`${api}/users/following/posts`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
     return res.json();
 }
