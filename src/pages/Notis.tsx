@@ -73,7 +73,8 @@ const Notis = () => {
                     <CardActionArea onClick={() => {
                         readNoti.mutate(noti.id);
                         navigate(`/comments/${noti.postId}`)
-                    }} />
+                    }} >
+
                     <CardContent sx={{
                         display: "flex",
                         opacity: 1
@@ -96,6 +97,7 @@ const Notis = () => {
                             </Box>
                         </Box>
                     </CardContent>
+                    </CardActionArea>
                 </Card>))
             }
         </Box>

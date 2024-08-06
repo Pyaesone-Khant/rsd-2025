@@ -13,6 +13,7 @@ import Template from "@src/Template";
 import { UserProps } from "@typings/types";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AppSocket from "./AppSocket";
 import { fetchVerify } from "./libs/fetcher";
 
 declare module '@mui/material/styles' {
@@ -135,6 +136,7 @@ const ThemedApp = () => {
         <AppContext.Provider value={data}>
             <QueryClientProvider client={queryClient} >
                 <RouterProvider router={router} />
+                <AppSocket/>
             </QueryClientProvider>
             <CssBaseline />
         </AppContext.Provider>

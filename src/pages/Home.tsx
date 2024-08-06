@@ -1,3 +1,4 @@
+import { useState } from 'react'
 // types
 import { PostProps } from '@typings/types'
 
@@ -8,9 +9,10 @@ import { Form, Item } from '@src/components'
 // context
 import { queryClient, useApp } from '@src/ThemedApp'
 
-// react-query
+// apis
 import { fetchFollowingPosts, fetchPosts, postPost } from '@src/libs/fetcher'
-import { useState } from 'react'
+
+// react-query
 import { QueryKey, useMutation, useQuery } from 'react-query'
 
 const api = import.meta.env.VITE_API
@@ -25,8 +27,6 @@ const Home = () => {
         if (showLatest) return fetchPosts();
         else return fetchFollowingPosts();
     })
-
-    console.log(data)
 
     const addItem = useMutation(async (content: string) => postPost(content), {
         onSuccess: async (post: PostProps) => {

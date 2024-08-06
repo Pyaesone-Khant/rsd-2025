@@ -3,14 +3,20 @@ import { useNavigate } from 'react-router-dom';
 // icons
 import { Add as AddIcon, CloseOutlined as CloseIcon, DarkMode as DarkModeIcon, LightMode as LightModeIcon, Menu as MenuIcon, Notifications as NotiIcon, Search as SearchIcon } from '@mui/icons-material';
 
+// types
+import { NotiProps } from '@typings/types';
+
 // components
 import { AppBar, Badge, Box, IconButton, Toolbar, Typography } from '@mui/material';
 
 // context
+import { useApp } from '@src/ThemedApp';
+
+// apis
 import { fetchNotis } from '@src/libs/fetcher';
-import { NotiProps } from '@typings/types';
+
+// react-query
 import { QueryKey, useQuery } from 'react-query';
-import { useApp } from '../ThemedApp';
 
 const Header = () => {
 
@@ -21,7 +27,7 @@ const Header = () => {
         setMode(mode === 'light' ? 'dark' : 'light')
     }
 
-    const { data, isLoading, isError, error } = useQuery<unknown, Error, NotiProps[], QueryKey>(["notis", auth], fetchNotis)
+    const { data, isLoading, isError } = useQuery<unknown, Error, NotiProps[], QueryKey[]>(["notis", auth?.toString() ?? ""], fetchNotis)
 
     function notiCount() {
         if (!auth) return 0;

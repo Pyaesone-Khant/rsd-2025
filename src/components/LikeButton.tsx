@@ -33,34 +33,34 @@ const LikeButton = ({ item, comment }: { item: PostProps | CommentProps, comment
     }
 
     const likePost = useMutation((id: number) => postPostLike(id), {
-        onSuccess: () => {
-            queryClient.refetchQueries("posts");
-            queryClient.refetchQueries("post");
-            queryClient.refetchQueries("comments");
+        onSuccess: async () => {
+            await queryClient.refetchQueries("posts");
+            await queryClient.refetchQueries("post");
+            await queryClient.refetchQueries("comments");
             setAlert({ alertMsg: "Post liked!", alertType: "success" })
 
         }
     })
 
     const likeComment = useMutation((id: number) => postCommentLike(id), {
-        onSuccess: () => {
-            queryClient.refetchQueries("comments")
+        onSuccess:  async () => {
+            await queryClient.refetchQueries("comments")
             setAlert({ alertMsg: "Comment liked!", alertType: "success" })
         }
     })
 
     const unlikePost = useMutation((id: number) => deletePostLike(id), {
-        onSuccess: (data: { message: string }) => {
-            queryClient.refetchQueries("posts");
-            queryClient.refetchQueries("post");
-            queryClient.refetchQueries("comments");
+        onSuccess: async (data: { message: string }) => {
+            await queryClient.refetchQueries("posts");
+            await queryClient.refetchQueries("post");
+            await queryClient.refetchQueries("comments");
             setAlert({ alertMsg: data.message, alertType: "success" })
         }
     })
 
     const unlikeComment = useMutation((id: number) => deleteCommentLike(id), {
-        onSuccess: (data: { message: string }) => {
-            queryClient.refetchQueries("comments")
+        onSuccess: async (data: { message: string }) => {
+            await queryClient.refetchQueries("comments")
             setAlert({ alertMsg: data.message, alertType: "success" })
         }
     })
