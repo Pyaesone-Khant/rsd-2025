@@ -43,11 +43,13 @@ const Header = () => {
                 </IconButton>
                 <Typography sx={{ flexGrow: 1, ml: 2, cursor: "pointer" }} onClick={() => navigate("/")} >Yaycha</Typography>
                 <Box>
-                    <IconButton
-                        color='inherit'
-                        onClick={() => setShowForm(!showForm)} >
-                        {showForm ? <CloseIcon /> : <AddIcon />}
-                    </IconButton>
+                    {
+                        auth && <IconButton
+                            color='inherit'
+                            onClick={() => setShowForm(!showForm)} >
+                            {showForm ? <CloseIcon /> : <AddIcon />}
+                        </IconButton>
+                    }
                     <IconButton color="inherit" onClick={() => navigate("/search")} >
                         <SearchIcon />
                     </IconButton>

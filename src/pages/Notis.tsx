@@ -13,7 +13,7 @@ import { Alert, Avatar, Box, Button, Card, CardActionArea, CardContent, Typograp
 import { fetchNotis, putAllNotisRead, putNotiRead } from "@src/libs/fetcher";
 
 // context
-import { queryClient } from "@src/ThemedApp";
+import { queryClient, useApp } from "@src/ThemedApp";
 
 // react-query
 import { QueryKey, useMutation, useQuery } from "react-query";
@@ -24,13 +24,14 @@ import { format } from "date-fns";
 const Notis = () => {
 
     const navigate = useNavigate();
+    const { auth } = useApp();
 
-    const { data, isLoading, isError, error } = useQuery<unknown, Error, NotiProps[], QueryKey>("notis", fetchNotis)
+    const { data, isLoading, isError, error } = useQuery<unknown, Error, NotiProps[], QueryKey[]>(["notis", auth?.toString() ?? ""], fetchNotis)
 
     const readAllNotis = useMutation(putAllNotisRead, {
         onMutate: async () => {
-            await queryClient.cancelQueries("notis")
-            await queryClient.setQueryData("notis", old => {
+            await queryClient.cancelQueries(["notis", auth?.toString() ?? ""])
+            await queryClient.setQueryData(["notis", auth?.toString() ?? ""], old => {
                 return old.map(noti => {
                     noti.read = true;
                     return noti;
@@ -39,7 +40,20 @@ const Notis = () => {
         }
     })
 
-    const readNoti = useMutation((id: number) => putNotiRead(id))
+    const readNoti = useMutation((id: number) => putNotiRead(id), {
+        onMutate: async (id: number) => {
+            console.log(id)
+            await queryClient.cancelQueries(["notis", auth?.toString() ?? ""])
+            await queryClient.setQueryData(["notis", auth?.toString() ?? ""], old => {
+                return old.map(noti => {
+                    if (noti.id == id) {
+                        noti.read = true;
+                    }
+                    return noti;
+                })
+            })
+        }
+    })
 
     const noData = !isLoading && !isError && !data?.length;
 
@@ -75,28 +89,28 @@ const Notis = () => {
                         navigate(`/comments/${noti.postId}`)
                     }} >
 
-                    <CardContent sx={{
-                        display: "flex",
-                        opacity: 1
-                    }}>
-                        {
-                            noti.type === "comment" ? <CommentIcon color="success" /> : <FavoriteIcon color="error" />
-                        }
-                        <Box sx={{ ml: 3 }} >
-                            <Avatar />
-                            <Box sx={{ mt: 1 }} >
-                                <Typography component="span" sx={{ mr: 0.5 }} >
-                                    <b> {noti.user.name} </b>
-                                </Typography>
-                                <Typography component="span" sx={{ mr: 0.5, color: "text.secondary" }} >
-                                    {noti.content}
-                                </Typography>
-                                <Typography component="span" color="primary" >
-                                    <small> {format(noti.created, "MMM dd, yyyy")} </small>
-                                </Typography>
+                        <CardContent sx={{
+                            display: "flex",
+                            opacity: 1
+                        }}>
+                            {
+                                noti.type === "comment" ? <CommentIcon color="success" /> : <FavoriteIcon color="error" />
+                            }
+                            <Box sx={{ ml: 3 }} >
+                                <Avatar />
+                                <Box sx={{ mt: 1 }} >
+                                    <Typography component="span" sx={{ mr: 0.5 }} >
+                                        <b> {noti.user.name} </b>
+                                    </Typography>
+                                    <Typography component="span" sx={{ mr: 0.5, color: "text.secondary" }} >
+                                        {noti.content}
+                                    </Typography>
+                                    <Typography component="span" color="primary" >
+                                        <small> {format(noti.created, "MMM dd, yyyy")} </small>
+                                    </Typography>
+                                </Box>
                             </Box>
-                        </Box>
-                    </CardContent>
+                        </CardContent>
                     </CardActionArea>
                 </Card>))
             }

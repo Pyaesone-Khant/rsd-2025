@@ -10,12 +10,11 @@ import { Form, Item } from '@src/components'
 import { queryClient, useApp } from '@src/ThemedApp'
 
 // apis
-import { fetchFollowingPosts, fetchPosts, postPost } from '@src/libs/fetcher'
+import { deletePost, fetchFollowingPosts, fetchPosts, postPost } from '@src/libs/fetcher'
 
 // react-query
 import { QueryKey, useMutation, useQuery } from 'react-query'
 
-const api = import.meta.env.VITE_API
 
 const Home = () => {
 
@@ -36,14 +35,11 @@ const Home = () => {
         }
     })
 
-    const removePost = useMutation(async (id: number) => {
-        const res = await fetch(`${api}/posts/${id}`, { method: "DELETE" });
-        return res.json();
-    },
+    const removePost = useMutation(async (id: number) => deletePost(id),
         {
             onMutate: id => {
                 queryClient.cancelQueries("posts");
-                queryClient.setQueryData("posts", (old: unknown[] | undefined) => (old || []).filter((item) => item?.id !== id));
+                queryClient.setQueryData(["posts", showLatest], (old: unknown[] | undefined) => (old || []).filter((item) => item?.id != id));
                 setAlert({ alertType: "success", alertMsg: "Post deleted!" })
             }
         }

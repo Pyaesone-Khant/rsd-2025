@@ -2,19 +2,25 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from "
 // colors
 import { deepPurple, grey } from "@mui/material/colors";
 
+// types
+import { UserProps } from "@typings/types";
+
 // mui components
 import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from "@mui/material";
 
 // components
+import AppSocket from "@src/AppSocket";
 import { CommentsPage, HomePage, LikesPage, LoginPage, NotisPage, ProfilePage, RegisterPage, SearchPage } from "@src/pages";
 import Template from "@src/Template";
 
-// react router
-import { UserProps } from "@typings/types";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AppSocket from "./AppSocket";
+// apis
 import { fetchVerify } from "./libs/fetcher";
+
+// react router
+import { QueryClient, QueryClientProvider } from "react-query";
+
+// router
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 declare module '@mui/material/styles' {
     interface Palette {
@@ -102,8 +108,11 @@ const ThemedApp = () => {
     useEffect(() => {
         fetchVerify().then((user: UserProps) => {
             if (user) setAuth(user);
+            else {
+                setAuth(null);
+                localStorage.removeItem("yaychaToken");
+            }
         })
-
     }, [])
 
     const theme = useMemo(() => {
@@ -136,7 +145,7 @@ const ThemedApp = () => {
         <AppContext.Provider value={data}>
             <QueryClientProvider client={queryClient} >
                 <RouterProvider router={router} />
-                <AppSocket/>
+                <AppSocket />
             </QueryClientProvider>
             <CssBaseline />
         </AppContext.Provider>

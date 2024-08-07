@@ -34,7 +34,7 @@ const Item = ({ item, onRemove, primary, comment }: PropsType) => {
     const { id, user, content, created } = item;
     const navigate = useNavigate();
 
-    const isAuthor = user.id == auth?.id
+    const isAuthor = user.id == auth?.id || item?.post?.userId == auth?.id;
 
     return (
         <Card sx={{ mb: 2 }} >

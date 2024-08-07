@@ -71,6 +71,11 @@ export async function fetchPosts() {
     return res.json();
 }
 
+export async function fetchPost(id: number) {
+    const res = await fetch(`${api}/posts/${id}`);
+    return res.json();
+}
+
 export async function postPost(content: string) {
     const token = getToken();
 
@@ -88,6 +93,19 @@ export async function postPost(content: string) {
     }
 
     throw new Error("Error: Check Network Log!")
+}
+
+export async function deletePost(id: number) {
+    const token = getToken();
+
+    const res = await fetch(`${api}/posts/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    return res.json()
 }
 
 export async function postComment(data: { content: string, postId: number }) {
@@ -109,6 +127,18 @@ export async function postComment(data: { content: string, postId: number }) {
     throw new Error("Error: Check Network Log!")
 }
 
+export async function deleteComment(id: number) {
+    const token = getToken();
+
+    const res = await fetch(`${api}/comments/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    return res.json();
+}
 
 export async function postPostLike(id: number) {
     const token = getToken();
