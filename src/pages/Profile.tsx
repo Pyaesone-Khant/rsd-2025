@@ -1,18 +1,26 @@
+import { useNavigate, useParams } from 'react-router-dom'
 
 // colors
 import { pink } from '@mui/material/colors'
 
+// types
+import { PostProps, UserProps } from '@typings/types'
+
 // components
-import { Alert, Avatar, Box, Typography } from '@mui/material'
+import { Alert, Avatar, Box, Button, Typography } from '@mui/material'
 import { Item } from '@src/components'
 import FollowButton from '@src/components/FollowButton'
+
+// apis
 import { fetchUser } from '@src/libs/fetcher'
-import { PostProps, UserProps } from '@typings/types'
+
+// react-query
 import { QueryKey, useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
 
 const Profile = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+
     const { data: user, isLoading, isError, error } = useQuery<UserProps, Error, UserProps, QueryKey>(["user", id], async () => fetchUser(id as string));
 
     if (isError) {
@@ -35,7 +43,7 @@ const Profile = () => {
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-                gap: 1,
+                gap: 2,
             }}>
                 <Avatar sx={{ width: 100, height: 100, bgcolor: pink[500] }} />
                 <Box sx={{ textAlign: "center", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 1 }} >
@@ -45,6 +53,39 @@ const Profile = () => {
                     </Typography>
                     <FollowButton user={user!} />
                 </Box>
+
+                <Box sx={{
+                    display: "flex",
+                    alignItems: "stretch",
+                    justifyContent: "center",
+                    gap: 1
+                }} >
+                    <Button sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: 120
+                    }} >
+                        <Typography variant='h6'> {user?.posts?.length || 0} </Typography>
+                        <Typography variant="overline" > Posts </Typography>
+                    </Button>
+                    <Button sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: 120
+                    }} onClick={() => navigate(`/profile/${user?.id}/followers`)}  >
+                        <Typography variant='h6'> {user?.followers?.length || 0} </Typography>
+                        <Typography variant="overline" > Followers </Typography>
+                    </Button>
+                    <Button sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: 120
+                    }} onClick={() => navigate(`/profile/${user?.id}/following`)} >
+                        <Typography variant='h6'> {user?.following?.length || 0} </Typography>
+                        <Typography variant="overline" > Following </Typography>
+                    </Button>
+                </Box>
+
             </Box>
             {
                 user?.posts?.map((post: PostProps) => <Item key={post.id} item={post} onRemove={() => { }} />)

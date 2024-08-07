@@ -1,14 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 
+// icons
+import { ArrowLeftOutlined } from '@mui/icons-material';
+
 // types
-import { CommentLikeProps, PostLikeProps } from '@typings/types';
+import { UserProps } from '@typings/types';
 
 // components
-import { ArrowLeftOutlined } from '@mui/icons-material';
 import { Avatar, Box, Button, List, ListItem, ListItemAvatar, ListItemButton, ListItemSecondaryAction, ListItemText, Typography } from '@mui/material';
 import FollowButton from './FollowButton';
 
-const UserList = ({ title, data }: { title: string, data: PostLikeProps[] | CommentLikeProps[] }) => {
+const UserList = ({ title, data }: { title: string, data: UserProps[] }) => {
 
     const navigate = useNavigate();
 
@@ -20,18 +22,17 @@ const UserList = ({ title, data }: { title: string, data: PostLikeProps[] | Comm
             <Typography variant='h4' sx={{ textAlign: "center" }}>{title}</Typography>
             <List>
                 {
-                    data?.map(item => {
+                    data?.map(user => {
                         return (
-                            <ListItem key={item.id} >
-                                <ListItemButton onClick={() => navigate(`/profile/${item.userId}`)} >
-
+                            <ListItem key={user.id} >
+                                <ListItemButton onClick={() => navigate(`/profile/${user.id}`)} >
                                     <ListItemAvatar>
                                         <Avatar />
                                     </ListItemAvatar>
-                                    <ListItemText primary={item.user.name}
-                                        secondary={item.user?.bio} />
+                                    <ListItemText primary={user.name}
+                                        secondary={user?.bio} />
                                     <ListItemSecondaryAction>
-                                        <FollowButton user={item.user} />
+                                        <FollowButton user={user} />
                                     </ListItemSecondaryAction>
                                 </ListItemButton>
                             </ListItem>

@@ -10,7 +10,7 @@ import { createTheme, CssBaseline, PaletteMode, ThemeProvider } from "@mui/mater
 
 // components
 import AppSocket from "@src/AppSocket";
-import { CommentsPage, HomePage, LikesPage, LoginPage, NotisPage, ProfilePage, RegisterPage, SearchPage } from "@src/pages";
+import { CommentsPage, FollowersPage, FollowingPage, HomePage, LikesPage, LoginPage, NotisPage, ProfilePage, RegisterPage, SearchPage } from "@src/pages";
 import Template from "@src/Template";
 
 // apis
@@ -74,7 +74,15 @@ const router = createBrowserRouter([
             },
             {
                 path: "/profile/:id",
-                element: <ProfilePage />
+                element: <ProfilePage />,
+            },
+            {
+                path: "/profile/:id/followers",
+                element: <FollowersPage />
+            },
+            {
+                path: "/profile/:id/following",
+                element: <FollowingPage />
             },
             {
                 path: "/comments/:id",
@@ -91,7 +99,7 @@ const router = createBrowserRouter([
             {
                 path: "/notis",
                 element: <NotisPage />
-            }
+            },
         ]
     }
 ])

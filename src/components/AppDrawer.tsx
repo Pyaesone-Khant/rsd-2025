@@ -61,7 +61,7 @@ const AppDrawer = () => {
                             }}
                         />
                         <Typography sx={{ fontWeight: "bold" }} >
-                            {auth ? auth.name : "VNL"}
+                            {auth ? auth.name : "USER"}
                         </Typography>
                     </Box>
                 </Box>

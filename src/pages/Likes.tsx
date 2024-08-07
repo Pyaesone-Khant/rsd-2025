@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 // types
-import { CommentLikeProps, PostLikeProps } from '@typings/types';
+import { CommentLikeProps, PostLikeProps, UserProps } from '@typings/types';
 
 // components
 import { Alert, Box } from '@mui/material';
@@ -15,17 +15,19 @@ import { QueryKey, useQuery } from 'react-query';
 
 const Likes = () => {
 
-    const {id, type} = useParams();
-    
-    const {data, isLoading, isError, error} = useQuery<unknown, Error, PostLikeProps[] | CommentLikeProps[], QueryKey>(["users", id, type], () => {
-        if(type == "comment"){
+    const { id, type } = useParams();
+
+    const { data, isLoading, isError, error } = useQuery<unknown, Error, PostLikeProps[] | CommentLikeProps[], QueryKey>(["users", id, type], () => {
+        if (type == "comment") {
             return fetchCommentLikes(id as string);
-        }else{
+        } else {
             return fetchPostLikes(id as string);
         }
     })
 
-    if(isError){
+    const users = data?.map(item => item.user);
+
+    if (isError) {
         return (
             <Box>
                 <Alert severity='warning' >{error.message}</Alert>
@@ -33,13 +35,13 @@ const Likes = () => {
         )
     }
 
-    if(isLoading){
-        return <Box sx={{textAlign: "center"}}> Loading . . . </Box>
+    if (isLoading) {
+        return <Box sx={{ textAlign: "center" }}> Loading . . . </Box>
     }
 
     return (
         <Box>
-            <UserList title='Likes' data={data as PostLikeProps[] | CommentLikeProps[] } />
+            <UserList title='Likes' data={users as UserProps[]} />
         </Box>
     )
 }
